@@ -1,26 +1,26 @@
 class Grade:
     def __init__(self, course_name, grade):
-        self.course_name = course_name
-        self.grade = grade
+        self.__course_name = course_name
+        self.__grade = grade
     
     def get_grade(self):
-        return self.grade
+        return self.__grade
 
     def get_course_name(self):
-        return self.course_name
+        return self.__course_name
 
 class Course:
     def __init__(self, course_name, max_students):
-        self.course_name = course_name
-        self.max_students = max_students
-        self.students = []
+        self.__course_name = course_name
+        self.__max_students = max_students
+        self.__students = []
 
     def get_course_name(self):
-        return self.course_name
+        return self.__course_name
     
     def add_student(self, student):
-        if len(self.students) < self.max_students:
-            self.students.append(student)
+        if len(self.__students) < self.__max_students:
+            self.__students.append(student)
             return True
         else:
             return False
@@ -28,9 +28,9 @@ class Course:
     def get_average_grade(self):
         total_grade = 0
         count_students = 0
-        if self.students:
-            for student in self.students:
-                student_grades = student.get_grades_by_course_name(self.course_name)
+        if self.__students:
+            for student in self.__students:
+                student_grades = student.get_grades_by_course_name(self.__course_name)
                 if student_grades:
                     for grade in student_grades:
                         total_grade += grade.get_grade()
@@ -41,22 +41,25 @@ class Course:
 
 class Student:
     def __init__(self, name):
-        self.name = name
-        self.grades = []
+        self.__name = name
+        self.__grades = []
     
     def add_grade(self, grade):
-        self.grades.append(grade)
+        self.__grades.append(grade)
+    
+    def get_name(self):
+        return self.__name
 
     def get_average_grade(self):
-        if self.grades:
-            total_grade = sum(grade.get_grade() for grade in self.grades)
-            return total_grade / len(self.grades)
+        if self.__grades:
+            total_grade = sum(grade.get_grade() for grade in self.__grades)
+            return total_grade / len(self.__grades)
         else:
             return 0
 
     def get_grades_by_course_name(self, course_name):
         course_grades = []
-        for grade in self.grades:
+        for grade in self.__grades:
             if grade.get_course_name() == course_name:
                 course_grades.append(grade)
         return course_grades
@@ -89,11 +92,12 @@ student1.add_grade(grade2_student1)
 student2.add_grade(grade1_student2)
 student2.add_grade(grade2_student2)
 
-print(grade1_student1.get_grade())
+# print(grade1_student1.grade)
+# print(student1.name)
 
 # Get average grades for students
-print(f"{student1.name}'s average grade: {student1.get_average_grade()}")
-print(f"{student2.name}'s average grade: {student2.get_average_grade()}")
+print(f"{student1.get_name()}'s average grade: {student1.get_average_grade()}")
+print(f"{student2.get_name()}'s average grade: {student2.get_average_grade()}")
 
 # Get average grade for the course
-print(f"{math_course.course_name}'s average grade: {math_course.get_average_grade()}")
+print(f"{math_course.get_course_name()}'s average grade: {math_course.get_average_grade()}")
