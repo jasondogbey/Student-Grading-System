@@ -1,18 +1,23 @@
 class Grade:
     def __init__(self, course_name, grade):
         self.__course_name = course_name
-        self.__grade = grade
+        self.__grade = self.__validate_grade(grade)
     
     def get_grade(self):
         return self.__grade
 
     def get_course_name(self):
         return self.__course_name
+    
+    def __validate_grade(self, grade):
+        if not isinstance(grade, int) or not (0 <= grade <= 100):
+            raise ValueError('Grade must be an integer between 0 and 100')
+        return grade
 
 class Course:
     def __init__(self, course_name, max_students):
         self.__course_name = course_name
-        self.__max_students = max_students
+        self.__max_students = self.__validate_max_students(max_students)
         self.__students = []
 
     def get_course_name(self):
@@ -39,13 +44,21 @@ class Course:
                 return total_grade / count_students
         return 0
 
+    def __validate_max_students(self, max_students):
+        if not isinstance(max_students, int) or not (0 < max_students):
+            raise ValueError('Max student must be an integer greater than 0')
+        return max_students
+    
 class Student:
     def __init__(self, name):
         self.__name = name
         self.__grades = []
     
     def add_grade(self, grade):
-        self.__grades.append(grade)
+        if isinstance(grade, Grade):
+            self.__grades.append(grade)
+        else:
+            raise ValueError('Invalid grade.')
     
     def get_name(self):
         return self.__name
